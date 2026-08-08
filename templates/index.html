@@ -256,48 +256,51 @@
             }
         }
 
-        // Handle Submit Form
-        document.getElementById('salesForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const submitBtn = document.getElementById('submitBtn');
-            submitBtn.disabled = true;
+      document.getElementById('salesForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const submitBtn = document.getElementById('submitBtn');
+    submitBtn.disabled = true;
 
-            const selectEl = document.getElementById('produkSelect');
-            const selectedOption = selectEl.options[selectEl.selectedIndex];
+    const selectEl = document.getElementById('produkSelect');
+    const selectedOption = selectEl.options[selectEl.selectedIndex];
 
-            const produkNama = selectEl.value;
-            const produkHarga = Number(selectedOption.getAttribute('data-harga'));
-            const jumlahPack = Number(document.getElementById('jumlah').value);
-            const namaPemesan = document.getElementById('pemesan').value;
+    const inputPemesan = document.getElementById('pemesan').value.trim();
+    const produkNama = selectEl.value;
+    const produkHarga = Number(selectedOption.getAttribute('data-harga')) || 0;
+    const jumlahPack = Number(document.getElementById('jumlah').value) || 1;
 
-            // Payload lengkap dengan nilai Total
-            const payload = {
-                tanggal: document.getElementById('tanggal').value,
-                pemesan: namaPemesan || '-',
-                produk: produkNama,
-                jumlah: jumlahPack,
-                harga: produkHarga,
-                total: produkHarga * jumlahPack
-            };
+    const payload = {
+        tanggal: document.getElementById('tanggal').value,
+        pemesan: inputPemesan !== "" ? inputPemesan : "-", // Jaga-jaga agar tidak kosong
+        produk: produkNama,
+        jumlah: jumlahPack,
+        harga: produkHarga,
+        total: produkHarga * jumlahPack
+    };
 
-            try {
-                await fetch('/api/penjualan', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                document.getElementById('pemesan').value = '';
-                document.getElementById('produkSelect').selectedIndex = 0;
-                document.getElementById('jumlah').value = '1';
-
-                await loadData();
-            } catch (err) {
-                alert('Gagal simpan data');
-            } finally {
-                submitBtn.disabled = false;
-            }
+    try {
+        const response = await fetch('/api/penjualan', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
         });
+
+        const resData = await response.json();
+        if(resData.status !== 'success') {
+            alert('Gagal simpan: ' + resData.message);
+        }
+
+        document.getElementById('pemesan').value = '';
+        document.getElementById('produkSelect').selectedIndex = 0;
+        document.getElementById('jumlah').value = '1';
+
+        await loadData();
+    } catch (err) {
+        alert('Gagal mengirim data ke server!');
+    } finally {
+        submitBtn.disabled = false;
+    }
+});
 
         loadData();
     </script>

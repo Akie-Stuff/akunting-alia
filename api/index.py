@@ -51,12 +51,26 @@ def get_penjualan():
 @app.route('/api/penjualan', methods=['POST'])
 def add_penjualan():
     try:
-        data = request.json
-        tanggal = data.get('tanggal') or datetime.now().strftime('%Y-%m-%d')
-        pemesan = data.get('pemesan') or '-'
-        produk = data.get('produk') or '-'
-        harga = int(data.get('harga', 0))
-        jumlah = int(data.get('jumlah', 1))
+        data = request.get_json(force=True) or {}
+        
+        tanggal = str(data.get('tanggal', '')) or datetime.now().strftime('%Y-%m-%d')
+        pemesan = str(data.get('pemesan', '')).strip()
+        if not pemesan:
+            pemesan = '-'  # Wajib ada string isi agar Apps Script tidak menggeser kolom!
+            
+        produk = str(data.get('produk', '-')).strip()
+        
+        try:
+            jumlah = int(data.get('jumlah', 1))
+        except (ValueError, TypeError):
+            jumlah = 1
+
+        try:
+            harga = int(data.get('harga', 0))
+        except (ValueError, TypeError):
+            harga = 0
+
+        # Jika total tidak dikirim dari frontend, hitung manual
         total = int(data.get('total', harga * jumlah))
 
         payload = {
@@ -68,11 +82,12 @@ def add_penjualan():
             'total': total
         }
 
-        requests.post(APPS_SCRIPT_URL, json=payload)
+        # Kirim JSON ke Google Apps Script
+        res = requests.post(APPS_SCRIPT_URL, json=payload, headers={'Content-Type': 'application/json'})
 
-        return jsonify({'status': 'success', 'message': 'Data berhasil dicatat!'})
+        return jsonify({'status': 'success', 'message': 'Data tersimpan!'})
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
-
+        
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
