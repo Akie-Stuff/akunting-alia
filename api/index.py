@@ -22,7 +22,7 @@ def get_penjualan():
 
         df = pd.DataFrame(records)
         
-        # Konversi angka secara aman
+        # Konversi numerik dengan aman
         df['Jumlah'] = pd.to_numeric(df.get('Jumlah', 0), errors='coerce').fillna(0)
         df['Harga_Satuan'] = pd.to_numeric(df.get('Harga_Satuan', 0), errors='coerce').fillna(0)
         df['Total'] = pd.to_numeric(df.get('Total', 0), errors='coerce').fillna(0)
@@ -30,7 +30,6 @@ def get_penjualan():
         # Grouping rekap harian untuk grafik
         rekap_harian = df.groupby('Tanggal')['Total'].sum().reset_index().to_dict(orient='records')
         
-        # Mapping nama kolom dari Sheet tepat ke JSON frontend
         transaksi = []
         for _, row in df.iterrows():
             transaksi.append({
@@ -58,7 +57,7 @@ def add_penjualan():
         produk = data.get('produk') or '-'
         harga = int(data.get('harga', 0))
         jumlah = int(data.get('jumlah', 1))
-        total = jumlah * harga
+        total = int(data.get('total', harga * jumlah))
 
         payload = {
             'tanggal': tanggal,
@@ -69,7 +68,6 @@ def add_penjualan():
             'total': total
         }
 
-        # Kirim data ke Apps Script
         requests.post(APPS_SCRIPT_URL, json=payload)
 
         return jsonify({'status': 'success', 'message': 'Data berhasil dicatat!'})
