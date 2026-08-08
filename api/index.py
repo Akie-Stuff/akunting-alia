@@ -6,7 +6,7 @@ from datetime import datetime
 app = Flask(__name__, template_folder='../templates')
 
 # APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzMueGMxWfi80OVHeBj6YqA4dUBqQ1T9dqJ2aUP5Ge4d5jwBeXaEpVD2fYLkwA3bGmNng/exec'
-APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby7mi-lpSM54NCww6tqGwiu3Qo5I2htMT3QD0R126PmKUxigF7MCFyf_C3OB2flERvJ/exec'
+APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzKWoKDJcszLfMqjOFKJg3so8aV4UCcv--qqQxE-XehhS2tRB7TkJV7rIKIrdeQmBtF/exec'
 
 @app.route('/')
 def index():
