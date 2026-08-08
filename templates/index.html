@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pencatatan Penjualan Risol</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100 p-4 md:p-6">
+    <div class="max-w-6xl mx-auto space-y-6">
+        
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Dashboard Penjualan Risol</h1>
+
+        <!-- Form Input -->
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-xl font-semibold mb-4 text-gray-700">Catat Penjualan Baru</h2>
+            <form id="salesForm" class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                <input type="date" id="tanggal" required class="p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <input type="text" id="produk" placeholder="Nama Produk (misal: Risol Mayo)" required class="p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <input type="number" id="jumlah" placeholder="Jumlah (Pcs)" required class="p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <input type="number" id="harga" placeholder="Harga/Pcs (Rp)" required class="p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <button type="submit" id="submitBtn" class="bg-blue-600 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700 transition duration-200">
+                    Simpan Data
+                </button>
+            </form>
+        </div>
+
+        <!-- Grafik Tren Penjualan Harian -->
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-xl font-semibold mb-4 text-gray-700">Tren Penjualan Harian (Naik/Turun)</h2>
+            <div class="relative w-full h-64 md:h-80">
+                <canvas id="salesChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Tabel Riwayat Penjualan -->
+        <div class="bg-white p-6 rounded-lg shadow-md overflow-x-auto">
+            <h2 class="text-xl font-semibold mb-4 text-gray-700">Riwayat Penjualan (Google Sheets)</h2>
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-gray-200 text-gray-700">
+                        <th class="p-3 border">Tanggal</th>
+                        <th class="p-3 border">Produk</th>
+                        <th class="p-3 border">Jumlah</th>
+                        <th class="p-3 border">Harga Satuan</th>
+                        <th class="p-3 border">Total</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <tr>
+                        <td colspan="5" class="p-4 text-center text-gray-500">Memuat data dari Google Sheets...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <script>
+        let chartInstance = null;
+
+        // Set default tanggal ke hari ini
+        document.getElementById('tanggal').valueAsDate = new Date();
+
+        async function loadData() {
+            try {
+                const res = await fetch('/api/penjualan');
+                const data = await res.json();
+
+                // Render Tabel
+                const tableBody = document.getElementById('tableBody');
+                tableBody.innerHTML = '';
+
+                if (!data.transaksi || data.transaksi.length === 0) {
+                    tableBody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-gray-500">Belum ada transaksi recorded.</td></tr>`;
+                } else {
+                    data.transaksi.forEach(item => {
+                        const tr = document.createElement('tr');
+                        tr.className = 'border-b hover:bg-gray-50';
+                        tr.innerHTML = `
+                            <td class="p-3 border">${item.Tanggal || '-'}</td>
+                            <td class="p-3 border">${item.Nama_Produk || item.produk || '-'}</td>
+                            <td class="p-3 border">${item.Jumlah || 0}</td>
+                            <td class="p-3 border">Rp ${Number(item.Harga_Satuan || item.harga || 0).toLocaleString('id-ID')}</td>
+                            <td class="p-3 border font-semibold">Rp ${Number(item.Total || item.total || 0).toLocaleString('id-ID')}</td>
+                        `;
+                        tableBody.appendChild(tr);
+                    });
+                }
+
+                // Render Grafik Tren
+                if (data.tren) {
+                    const labels = data.tren.map(t => t.Tanggal);
+                    const totals = data.tren.map(t => t.Total);
+
+                    if (chartInstance) chartInstance.destroy();
+
+                    const ctx = document.getElementById('salesChart').getContext('2d');
+                    chartInstance = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Total Penjualan Harian (Rp)',
+                                data: totals,
+                                borderColor: '#2563eb',
+                                backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                                fill: true,
+                                tension: 0.3
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: { beginAtZero: true }
+                            }
+                        }
+                    });
+                }
+            } catch (err) {
+                console.error("Gagal memuat data:", err);
+            }
+        }
+
+        // Handle Submit Form
+        document.getElementById('salesForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerText = 'Menyimpan...';
+
+            const payload = {
+                tanggal: document.getElementById('tanggal').value,
+                produk: document.getElementById('produk').value,
+                jumlah: document.getElementById('jumlah').value,
+                harga: document.getElementById('harga').value
+            };
+
+            try {
+                await fetch('/api/penjualan', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                document.getElementById('produk').value = '';
+                document.getElementById('jumlah').value = '';
+
+                await loadData();
+            } catch (err) {
+                alert('Gagal menyimpan data');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = 'Simpan Data';
+            }
+        });
+
+        // Initial Load
+        loadData();
+    </script>
+</body>
+</html>
