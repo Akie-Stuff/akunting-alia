@@ -22,19 +22,33 @@ def get_penjualan():
             return jsonify({'transaksi': [], 'tren': []})
 
         df = pd.DataFrame(records)
+        
+        # Pastikan kolom bertipe numerik
         df['Jumlah'] = pd.to_numeric(df['Jumlah'], errors='coerce').fillna(0)
         df['Harga_Satuan'] = pd.to_numeric(df['Harga_Satuan'], errors='coerce').fillna(0)
         df['Total'] = pd.to_numeric(df['Total'], errors='coerce').fillna(0)
         
+        # Rekap harian untuk grafik tren
         rekap_harian = df.groupby('Tanggal')['Total'].sum().reset_index().to_dict(orient='records')
         
+        # Samakan nama key agar mudah dibaca index.html
+        transaksi = []
+        for _, row in df.iterrows():
+            transaksi.append({
+                'Tanggal': str(row.get('Tanggal', '')),
+                'Nama_Produk': str(row.get('Nama_Produk', '')),
+                'Jumlah': int(row.get('Jumlah', 0)),
+                'Harga_Satuan': int(row.get('Harga_Satuan', 0)),
+                'Total': int(row.get('Total', 0))
+            })
+
         return jsonify({
-            'transaksi': df.to_dict(orient='records'),
+            'transaksi': transaksi,
             'tren': rekap_harian
         })
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
-
+        
 @app.route('/api/penjualan', methods=['POST'])
 def add_penjualan():
     try:
