@@ -5,7 +5,8 @@ from datetime import datetime
 
 app = Flask(__name__, template_folder='../templates')
 
-APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzMueGMxWfi80OVHeBj6YqA4dUBqQ1T9dqJ2aUP5Ge4d5jwBeXaEpVD2fYLkwA3bGmNng/exec'
+# APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzMueGMxWfi80OVHeBj6YqA4dUBqQ1T9dqJ2aUP5Ge4d5jwBeXaEpVD2fYLkwA3bGmNng/exec'
+APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzP_AjNdcXTHZe913MGP69GqiAPRP-cqOck_DzvdovxkGFm0Omb8e45mC6Ms48HkawrlQ/exec'
 
 @app.route('/')
 def index():
@@ -88,6 +89,6 @@ def add_penjualan():
         return jsonify({'status': 'success', 'message': 'Data tersimpan!'})
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
-        
+
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
