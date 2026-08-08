@@ -3,10 +3,8 @@ import requests
 import pandas as pd
 from datetime import datetime
 
-# Path templates diarahkan ke parent directory '../templates'
 app = Flask(__name__, template_folder='../templates')
 
-# URL Apps Script Web App milikmu
 APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzMueGMxWfi80OVHeBj6YqA4dUBqQ1T9dqJ2aUP5Ge4d5jwBeXaEpVD2fYLkwA3bGmNng/exec'
 
 @app.route('/')
@@ -24,21 +22,21 @@ def get_penjualan():
 
         df = pd.DataFrame(records)
         
-        # Konversi tipe data numerik
-        df['Jumlah'] = pd.to_numeric(df['Jumlah'], errors='coerce').fillna(0)
-        df['Harga_Satuan'] = pd.to_numeric(df['Harga_Satuan'], errors='coerce').fillna(0)
-        df['Total'] = pd.to_numeric(df['Total'], errors='coerce').fillna(0)
+        # Konversi angka secara aman
+        df['Jumlah'] = pd.to_numeric(df.get('Jumlah', 0), errors='coerce').fillna(0)
+        df['Harga_Satuan'] = pd.to_numeric(df.get('Harga_Satuan', 0), errors='coerce').fillna(0)
+        df['Total'] = pd.to_numeric(df.get('Total', 0), errors='coerce').fillna(0)
         
-        # Rekap harian untuk grafik tren harian
+        # Grouping rekap harian untuk grafik
         rekap_harian = df.groupby('Tanggal')['Total'].sum().reset_index().to_dict(orient='records')
         
-        # Formatting data transaksi secara konsisten untuk dikirim ke frontend
+        # Mapping nama kolom dari Sheet tepat ke JSON frontend
         transaksi = []
         for _, row in df.iterrows():
             transaksi.append({
                 'Tanggal': str(row.get('Tanggal', '')),
                 'Nama_Pemesan': str(row.get('Nama_Pemesan', '-')),
-                'Nama_Produk': str(row.get('Nama_Produk', '')),
+                'Nama_Produk': str(row.get('Nama_Produk', '-')),
                 'Jumlah': int(row.get('Jumlah', 0)),
                 'Harga_Satuan': int(row.get('Harga_Satuan', 0)),
                 'Total': int(row.get('Total', 0))
@@ -57,9 +55,9 @@ def add_penjualan():
         data = request.json
         tanggal = data.get('tanggal') or datetime.now().strftime('%Y-%m-%d')
         pemesan = data.get('pemesan') or '-'
-        produk = data.get('produk')
-        harga = int(data.get('harga')) # Harga per pack otomatis dari frontend
-        jumlah = int(data.get('jumlah')) # Jumlah pack
+        produk = data.get('produk') or '-'
+        harga = int(data.get('harga', 0))
+        jumlah = int(data.get('jumlah', 1))
         total = jumlah * harga
 
         payload = {
@@ -71,10 +69,10 @@ def add_penjualan():
             'total': total
         }
 
-        # Kirim data ke Google Sheets via Apps Script Webhook
+        # Kirim data ke Apps Script
         requests.post(APPS_SCRIPT_URL, json=payload)
 
-        return jsonify({'status': 'success', 'message': 'Data berhasil dicatat ke Google Sheets!'})
+        return jsonify({'status': 'success', 'message': 'Data berhasil dicatat!'})
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
 

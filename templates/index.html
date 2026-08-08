@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,8 +12,9 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&family=Poppins:wght@400;600&display=swap"
+        rel="stylesheet">
+
     <script>
         tailwind.config = {
             theme: {
@@ -39,18 +41,31 @@
             background-color: #FFF0F5;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%23ffc0cb' fill-opacity='0.2'%3E%3Cpath d='M0 0h20L0 20z'/%3E%3Cpath d='M20 10V0L10 20h10zm-10 0H0L20 0v10zM0 20h10L0 10v10zm10 0h10V10L10 20z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         }
+
         .cherry-title {
             font-family: 'Cherry Bomb One', cursive;
         }
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: #FFF0F5; }
-        ::-webkit-scrollbar-thumb { background: #FF69B4; border-radius: 10px; }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #FFF0F5;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #FF69B4;
+            border-radius: 10px;
+        }
     </style>
 </head>
+
 <body class="p-4 md:p-8">
-    
+
     <div class="max-w-6xl mx-auto space-y-8">
-        
+
         <!-- Header -->
         <header class="text-center bg-white p-6 rounded-3xl shadow-lg border-4 border-soft-pink">
             <h1 class="cherry-title text-4xl md:text-5xl text-hot-pink tracking-wide">
@@ -68,15 +83,18 @@
             <form id="salesForm" class="grid grid-cols-1 md:grid-cols-5 gap-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal</label>
-                    <input type="date" id="tanggal" required class="w-full p-3 border-2 border-soft-pink rounded-full focus:outline-none focus:ring-2 focus:ring-hot-pink bg-pastel-pink/50">
+                    <input type="date" id="tanggal" required
+                        class="w-full p-3 border-2 border-soft-pink rounded-full focus:outline-none focus:ring-2 focus:ring-hot-pink bg-pastel-pink/50">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Nama Pemesan</label>
-                    <input type="text" id="pemesan" placeholder="Misal: Kak Siska" required class="w-full p-3 border-2 border-soft-pink rounded-full focus:outline-none focus:ring-2 focus:ring-hot-pink bg-pastel-pink/50">
+                    <input type="text" id="pemesan" placeholder="Misal: Kak Siska" required
+                        class="w-full p-3 border-2 border-soft-pink rounded-full focus:outline-none focus:ring-2 focus:ring-hot-pink bg-pastel-pink/50">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Pilih Varian Risol</label>
-                    <select id="produkSelect" required class="w-full p-3 border-2 border-soft-pink rounded-full focus:outline-none focus:ring-2 focus:ring-hot-pink bg-pastel-pink/50">
+                    <select id="produkSelect" required
+                        class="w-full p-3 border-2 border-soft-pink rounded-full focus:outline-none focus:ring-2 focus:ring-hot-pink bg-pastel-pink/50">
                         <option value="" data-harga="0">-- Pilih Varian --</option>
                         <option value="Matcha Cheese (Isi 5)" data-harga="20000">Matcha Cheese (20k)</option>
                         <option value="Choco Cheese (Isi 5)" data-harga="20000">Choco Cheese (20k)</option>
@@ -88,10 +106,12 @@
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Jumlah (Pack)</label>
-                    <input type="number" id="jumlah" min="1" value="1" placeholder="Berapa pack?" required class="w-full p-3 border-2 border-soft-pink rounded-full focus:outline-none focus:ring-2 focus:ring-hot-pink bg-pastel-pink/50">
+                    <input type="number" id="jumlah" min="1" value="1" placeholder="Berapa pack?" required
+                        class="w-full p-3 border-2 border-soft-pink rounded-full focus:outline-none focus:ring-2 focus:ring-hot-pink bg-pastel-pink/50">
                 </div>
                 <div class="flex items-end">
-                    <button type="submit" id="submitBtn" class="w-full bg-hot-pink text-white font-bold py-3 px-6 rounded-full hover:bg-pink-600 transition shadow-md flex items-center justify-center gap-2">
+                    <button type="submit" id="submitBtn"
+                        class="w-full bg-hot-pink text-white font-bold py-3 px-6 rounded-full hover:bg-pink-600 transition shadow-md flex items-center justify-center gap-2">
                         <span>💾</span> Simpan Data
                     </button>
                 </div>
@@ -110,7 +130,8 @@
                 </div>
             </section>
 
-            <section class="bg-white p-8 rounded-3xl shadow-lg border-2 border-cute-yellow flex flex-col justify-between">
+            <section
+                class="bg-white p-8 rounded-3xl shadow-lg border-2 border-cute-yellow flex flex-col justify-between">
                 <div class="flex items-center gap-3 mb-6">
                     <span class="text-3xl">💰</span>
                     <h2 class="text-2xl font-semibold text-gray-800">Cuan Hari Ini</h2>
@@ -179,17 +200,17 @@
                     sortedTransaksi.forEach((item, index) => {
                         const tr = document.createElement('tr');
                         tr.className = index % 2 === 0 ? 'bg-white hover:bg-pastel-pink/50' : 'bg-pastel-pink/20 hover:bg-pastel-pink/50';
-                        
+
                         const formattedDate = item.Tanggal ? String(item.Tanggal).split('T')[0] : '-';
 
                         tr.innerHTML = `
-                            <td class="p-4 border-b border-pastel-pink font-mono">${formattedDate}</td>
-                            <td class="p-4 border-b border-pastel-pink font-medium text-gray-800">${item.Nama_Pemesan || '-'}</td>
-                            <td class="p-4 border-b border-pastel-pink font-medium text-boba-brown">${item.Nama_Produk || '-'}</td>
-                            <td class="p-4 border-b border-pastel-pink text-center font-bold text-hot-pink">${item.Jumlah || 0} pack</td>
-                            <td class="p-4 border-b border-pastel-pink text-right">${formatRupiah(item.Harga_Satuan || 0)}</td>
-                            <td class="p-4 border-b border-pastel-pink text-right font-semibold text-hot-pink">${formatRupiah(item.Total || 0)}</td>
-                        `;
+        <td class="p-4 border-b border-pastel-pink font-mono">${formattedDate}</td>
+        <td class="p-4 border-b border-pastel-pink font-medium text-gray-800">${item.Nama_Pemesan || '-'}</td>
+        <td class="p-4 border-b border-pastel-pink font-medium text-boba-brown">${item.Nama_Produk || '-'}</td>
+        <td class="p-4 border-b border-pastel-pink text-center font-bold text-hot-pink">${item.Jumlah || 0} pack</td>
+        <td class="p-4 border-b border-pastel-pink text-right">${formatRupiah(item.Harga_Satuan || 0)}</td>
+        <td class="p-4 border-b border-pastel-pink text-right font-semibold text-hot-pink">${formatRupiah(item.Total || 0)}</td>
+    `;
                         tableBody.appendChild(tr);
                     });
 
@@ -245,7 +266,7 @@
 
             const selectEl = document.getElementById('produkSelect');
             const selectedOption = selectEl.options[selectEl.selectedIndex];
-            
+
             const produkNama = selectEl.value;
             const produkHarga = selectedOption.getAttribute('data-harga');
 
@@ -263,7 +284,7 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
-                
+
                 document.getElementById('pemesan').value = '';
                 document.getElementById('produkSelect').selectedIndex = 0;
                 document.getElementById('jumlah').value = '1';
@@ -279,4 +300,5 @@
         loadData();
     </script>
 </body>
+
 </html>
