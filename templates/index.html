@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catatan Jualan Risol Alia ✨</title>
+    <title>Dashboard Penjualan - Risol Alia</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js -->
@@ -12,23 +12,22 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        'hot-pink': '#FF69B4',
-                        'soft-pink': '#FFC0CB',
-                        'pastel-pink': '#FFF0F5',
-                        'cute-purple': '#E6E6FA',
-                        'cute-yellow': '#FFFACD',
-                        'boba-brown': '#8B4513'
+                        'brand-primary': '#4F46E5',    // Indigo-600
+                        'brand-hover': '#4338CA',      // Indigo-700
+                        'brand-light': '#EEF2FF',      // Indigo-50
+                        'accent-success': '#10B981',   // Emerald-500
+                        'surface-card': '#FFFFFF',
+                        'surface-bg': '#F8FAFC'        // Slate-50
                     },
                     fontFamily: {
-                        'cherry': ['"Cherry Bomb One"', 'cursive'],
-                        'poppins': ['"Poppins"', 'sans-serif'],
+                        'sans': ['"Inter"', 'sans-serif'],
                     }
                 }
             }
@@ -36,152 +35,171 @@
     </script>
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #FFF0F5;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%23ffc0cb' fill-opacity='0.2'%3E%3Cpath d='M0 0h20L0 20z'/%3E%3Cpath d='M20 10V0L10 20h10zm-10 0H0L20 0v10zM0 20h10L0 10v10zm10 0h10V10L10 20z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-        }
-
-        .cherry-title {
-            font-family: 'Cherry Bomb One', cursive;
+            font-family: 'Inter', sans-serif;
+            background-color: #F8FAFC;
         }
 
         ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
+            width: 6px;
+            height: 6px;
         }
 
         ::-webkit-scrollbar-track {
-            background: #FFF0F5;
+            background: #F1F5F9;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #FF69B4;
-            border-radius: 10px;
+            background: #CBD5E1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94A3B8;
         }
     </style>
 </head>
 
-<body class="p-4 md:p-8">
+<body class="p-4 md:p-8 text-slate-800">
 
-    <div class="max-w-6xl mx-auto space-y-8">
+    <div class="max-w-7xl mx-auto space-y-6">
 
         <!-- Header -->
-        <header class="text-center bg-white p-6 rounded-3xl shadow-lg border-4 border-soft-pink">
-            <h1 class="cherry-title text-4xl md:text-5xl text-hot-pink tracking-wide">
-                💖 Catatan Jualan Risol Alia ✨
-            </h1>
-            <p class="text-gray-600 mt-2">Semangat jualan hari ini, cantik! Jangan lupa dicatat ya~ 🥰</p>
+        <header class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+                <h1 class="text-2xl font-bold text-slate-900 tracking-tight">
+                    Dashboard Penjualan Risol Alia
+                </h1>
+                <p class="text-slate-500 text-sm mt-1">Sistem pencatatan transaksi dan analisis pendapatan harian.</p>
+            </div>
+            <div class="text-xs text-slate-400 bg-slate-50 px-3 py-2 rounded-lg border border-slate-100 self-start md:self-auto">
+                Status Sistem: <span class="text-emerald-600 font-semibold">● Terhubung</span>
+            </div>
         </header>
 
         <!-- Form Input -->
-        <section class="bg-white p-8 rounded-3xl shadow-xl border-t-8 border-hot-pink">
-            <div class="flex items-center gap-3 mb-6">
-                <span class="text-3xl">📝</span>
-                <h2 class="text-2xl font-semibold text-gray-800">Catat Pesanan Baru</h2>
+        <section class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+            <div class="flex items-center gap-2 mb-5 pb-3 border-b border-slate-100">
+                <svg class="w-5 h-5 text-brand-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <h2 class="text-lg font-semibold text-slate-900">Input Transaksi Baru</h2>
             </div>
             
-            <form id="salesForm" class="space-y-4">
+            <form id="salesForm" class="space-y-5">
                 <!-- Informasi Transaksi Utama -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal</label>
+                        <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Tanggal Transaksi</label>
                         <input type="date" id="tanggal" required
-                            class="w-full p-3 border-2 border-soft-pink rounded-full focus:outline-none focus:ring-2 focus:ring-hot-pink bg-pastel-pink/50">
+                            class="w-full p-2.5 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-brand-primary bg-white">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Nama Pemesan</label>
-                        <input type="text" id="pemesan" placeholder="Misal: Doraemon" required
-                            class="w-full p-3 border-2 border-soft-pink rounded-full focus:outline-none focus:ring-2 focus:ring-hot-pink bg-pastel-pink/50">
+                        <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Nama Pemesan</label>
+                        <input type="text" id="pemesan" placeholder="Masukkan nama pelanggan" required
+                            class="w-full p-2.5 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-brand-primary bg-white">
                     </div>
                 </div>
 
                 <!-- Container Item Pesanan Dynamic -->
-                <div class="bg-pastel-pink/30 p-4 rounded-2xl border-2 border-dashed border-soft-pink space-y-3">
-                    <label class="block text-sm font-semibold text-gray-700">Daftar Pesanan Risol:</label>
-                    <div id="itemsContainer" class="space-y-3">
+                <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 space-y-3">
+                    <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider">Rincian Item Pesanan</label>
+                    <div id="itemsContainer" class="space-y-2">
                         <!-- Row pesanan item pertama -->
                         <div class="item-row grid grid-cols-1 md:grid-cols-12 gap-2 items-center">
                             <div class="md:col-span-7">
-                                <select class="produkSelect w-full p-3 border-2 border-soft-pink rounded-full focus:outline-none focus:ring-2 focus:ring-hot-pink bg-white" required>
-                                    <option value="" data-harga="0">-- Pilih Varian --</option>
-                                    <option value="Matcha Cheese (Isi 5)" data-harga="20000">Matcha Cheese (20k)</option>
-                                    <option value="Choco Cheese (Isi 5)" data-harga="20000">Choco Cheese (20k)</option>
-                                    <option value="Ragout Ayam (Isi 5)" data-harga="20000">Ragout Ayam (20k)</option>
-                                    <option value="Beef Bolognese (Isi 5)" data-harga="20000">Beef Bolognese (20k)</option>
-                                    <option value="Mix Manis (6 Pcs)" data-harga="24000">Mix Manis 6 Pcs (24k)</option>
-                                    <option value="Mix Asin (6 Pcs)" data-harga="24000">Mix Asin 6 Pcs (24k)</option>
+                                <select class="produkSelect w-full p-2.5 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary bg-white" required>
+                                    <option value="" data-harga="0">-- Pilih Varian Produk --</option>
+                                    <option value="Matcha Cheese (Isi 5)" data-harga="20000">Matcha Cheese (Rp 20.000)</option>
+                                    <option value="Choco Cheese (Isi 5)" data-harga="20000">Choco Cheese (Rp 20.000)</option>
+                                    <option value="Ragout Ayam (Isi 5)" data-harga="20000">Ragout Ayam (Rp 20.000)</option>
+                                    <option value="Beef Bolognese (Isi 5)" data-harga="20000">Beef Bolognese (Rp 20.000)</option>
+                                    <option value="Mix Manis (6 Pcs)" data-harga="24000">Mix Manis 6 Pcs (Rp 24.000)</option>
+                                    <option value="Mix Asin (6 Pcs)" data-harga="24000">Mix Asin 6 Pcs (Rp 24.000)</option>
                                 </select>
                             </div>
                             <div class="md:col-span-4">
-                                <input type="number" class="jumlahInput w-full p-3 border-2 border-soft-pink rounded-full focus:outline-none focus:ring-2 focus:ring-hot-pink bg-white" min="1" value="1" placeholder="Pack" required>
+                                <div class="relative">
+                                    <input type="number" class="jumlahInput w-full p-2.5 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary bg-white pr-12" min="1" value="1" placeholder="Jumlah" required>
+                                    <span class="absolute right-3 top-2.5 text-xs text-slate-400 font-medium pointer-events-none">Pack</span>
+                                </div>
                             </div>
                             <div class="md:col-span-1 text-center">
-                                <button type="button" class="removeItemBtn text-red-400 hover:text-red-600 font-bold p-2 text-xl hidden">✕</button>
+                                <button type="button" class="removeItemBtn text-slate-400 hover:text-red-500 font-bold p-1 transition hidden" title="Hapus Item">
+                                    <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                    </svg>
+                                </button>
                             </div>
                         </div>
                     </div>
 
                     <!-- Button Tambah Varian -->
-                    <button type="button" id="addItemBtn" class="text-sm bg-cute-purple text-purple-700 font-semibold px-4 py-2 rounded-full hover:bg-purple-200 transition border border-purple-300">
-                        ➕ Tambah Varian Lain
+                    <button type="button" id="addItemBtn" class="mt-2 text-xs bg-white text-slate-700 font-medium px-3 py-2 rounded-md hover:bg-slate-100 border border-slate-300 transition shadow-sm inline-flex items-center gap-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        Tambah Varian Lain
                     </button>
                 </div>
 
-                <div class="pt-2">
+                <div class="pt-2 flex justify-end">
                     <button type="submit" id="submitBtn"
-                        class="w-full bg-hot-pink text-white font-bold py-3 px-6 rounded-full hover:bg-pink-600 transition shadow-md flex items-center justify-center gap-2">
-                        <span>💾</span> Simpan Semua Pesanan
+                        class="w-full md:w-auto bg-brand-primary text-white font-medium py-2.5 px-6 rounded-lg hover:bg-brand-hover transition shadow-sm inline-flex items-center justify-center gap-2 text-sm">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
+                        Simpan Transaksi
                     </button>
                 </div>
             </form>
         </section>
 
-        <!-- Grafik & Cuan -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <section class="lg:col-span-2 bg-white p-8 rounded-3xl shadow-lg border-2 border-cute-purple">
-                <div class="flex items-center gap-3 mb-6">
-                    <span class="text-3xl">📈</span>
-                    <h2 class="text-2xl font-semibold text-gray-800">Tren Jualan Harian</h2>
+        <!-- Grafik & Ringkasan -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <section class="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <div class="flex items-center justify-between mb-4 pb-2 border-b border-slate-100">
+                    <h2 class="text-base font-semibold text-slate-900">Tren Penjualan Harian</h2>
+                    <span class="text-xs text-slate-400">7 Hari Terakhir</span>
                 </div>
-                <div class="relative w-full h-72 md:h-80">
+                <div class="relative w-full h-64 md:h-72">
                     <canvas id="salesChart"></canvas>
                 </div>
             </section>
 
-            <section class="bg-white p-8 rounded-3xl shadow-lg border-2 border-cute-yellow flex flex-col justify-between">
-                <div class="flex items-center gap-3 mb-6">
-                    <span class="text-3xl">💰</span>
-                    <h2 class="text-2xl font-semibold text-gray-800">Cuan Hari Ini</h2>
+            <section class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-4 pb-2 border-b border-slate-100">
+                        <h2 class="text-base font-semibold text-slate-900">Pendapatan Hari Ini</h2>
+                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
+                            Terbaru
+                        </span>
+                    </div>
+                    <div class="py-6 px-4 bg-slate-50 rounded-lg border border-slate-100 text-center my-2">
+                        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Omset</p>
+                        <p id="todayRevenue" class="text-3xl font-bold text-slate-900 mt-2">Rp 0</p>
+                    </div>
                 </div>
-                <div class="text-center py-6 bg-pastel-pink rounded-2xl border-4 border-dashed border-soft-pink">
-                    <p class="text-sm text-gray-600">Total Pendapatan (Hari Ini)</p>
-                    <p id="todayRevenue" class="cherry-title text-4xl text-hot-pink mt-1">Rp 0</p>
-                </div>
-                <p class="text-xs text-center text-gray-500 mt-4">Data diambil dari tanggal terbaru.</p>
+                <p class="text-xs text-slate-400 text-center">Kalkulasi berdasarkan data transaksi tanggal paling baru.</p>
             </section>
         </div>
 
         <!-- Tabel Riwayat -->
-        <section class="bg-white p-8 rounded-3xl shadow-lg border-2 border-soft-pink">
-            <div class="flex items-center gap-3 mb-6">
-                <span class="text-3xl">📋</span>
-                <h2 class="text-2xl font-semibold text-gray-800">Riwayat Penjualan</h2>
+        <section class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+            <div class="flex items-center justify-between mb-4 pb-2 border-b border-slate-100">
+                <h2 class="text-base font-semibold text-slate-900">Riwayat Transaksi</h2>
+                <span class="text-xs text-slate-500">Tergabung per Pemesan</span>
             </div>
-            <div class="overflow-x-auto rounded-2xl border border-pastel-pink">
-                <table class="w-full text-left table-auto">
+            <div class="overflow-x-auto rounded-lg border border-slate-200">
+                <table class="w-full text-left table-auto text-sm">
                     <thead>
-                        <tr class="bg-hot-pink text-white">
-                            <th class="p-4 font-semibold rounded-tl-2xl">📅 Tanggal</th>
-                            <th class="p-4 font-semibold">👤 Pemesan</th>
-                            <th class="p-4 font-semibold">🥐 Detail Varian Risol</th>
-                            <th class="p-4 font-semibold text-center">📦 Total Pack</th>
-                            <th class="p-4 font-semibold text-right rounded-tr-2xl">💰 Total Bayar</th>
+                        <tr class="bg-slate-50 text-slate-600 font-semibold border-b border-slate-200 text-xs uppercase tracking-wider">
+                            <th class="p-3.5">Tanggal</th>
+                            <th class="p-3.5">Nama Pemesan</th>
+                            <th class="p-3.5">Rincian Varian</th>
+                            <th class="p-3.5 text-center">Total Volume</th>
+                            <th class="p-3.5 text-right">Total Pembayaran</th>
                         </tr>
                     </thead>
-                    <tbody id="tableBody" class="text-gray-700">
+                    <tbody id="tableBody" class="divide-y divide-slate-100 text-slate-700">
                         <tr>
-                            <td colspan="5" class="p-8 text-center text-gray-500 bg-pastel-pink/30">
-                                Memuat data dari Google Sheets...
+                            <td colspan="5" class="p-8 text-center text-slate-400 bg-white">
+                                Memuat data transaksi...
                             </td>
                         </tr>
                     </tbody>
@@ -226,10 +244,10 @@
                 tableBody.innerHTML = '';
 
                 if (!data.transaksi || data.transaksi.length === 0) {
-                    tableBody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-gray-500 bg-pastel-pink/30">Belum ada transaksi.</td></tr>`;
+                    tableBody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-slate-400">Belum ada transaksi tercatat.</td></tr>`;
                     document.getElementById('todayRevenue').innerText = 'Rp 0';
                 } else {
-                    // Penggabungan (Grouping) berdasarkan Tanggal + Nama Pemesan
+                    // Grouping berdasarkan Tanggal + Nama Pemesan
                     const groupedMap = new Map();
 
                     data.transaksi.forEach(item => {
@@ -264,19 +282,19 @@
 
                     sortedGroups.forEach((group, index) => {
                         const tr = document.createElement('tr');
-                        tr.className = index % 2 === 0 ? 'bg-white hover:bg-pastel-pink/50' : 'bg-pastel-pink/20 hover:bg-pastel-pink/50';
+                        tr.className = 'hover:bg-slate-50 transition-colors';
 
-                        // Format list varian yang dibeli
+                        // Format list varian
                         const itemListHtml = group.items.map(i => 
-                            `<div class="text-sm"><span class="font-medium text-boba-brown">• ${i.produk}</span> <span class="text-xs text-gray-500">(${i.jumlah} pack - ${formatRupiah(i.total)})</span></div>`
+                            `<div class="text-xs leading-relaxed"><span class="font-medium text-slate-800">• ${i.produk}</span> <span class="text-slate-400">(${i.jumlah} pack - ${formatRupiah(i.total)})</span></div>`
                         ).join('');
 
                         tr.innerHTML = `
-                            <td class="p-4 border-b border-pastel-pink font-mono align-top">${group.Tanggal}</td>
-                            <td class="p-4 border-b border-pastel-pink font-medium text-gray-800 align-top">${group.Nama_Pemesan}</td>
-                            <td class="p-4 border-b border-pastel-pink align-top">${itemListHtml}</td>
-                            <td class="p-4 border-b border-pastel-pink text-center font-bold text-hot-pink align-top">${group.totalPack} pack</td>
-                            <td class="p-4 border-b border-pastel-pink text-right font-semibold text-hot-pink align-top">${formatRupiah(group.totalHarga)}</td>
+                            <td class="p-3.5 font-mono text-xs text-slate-500 align-top">${group.Tanggal}</td>
+                            <td class="p-3.5 font-semibold text-slate-800 align-top">${group.Nama_Pemesan}</td>
+                            <td class="p-3.5 align-top">${itemListHtml}</td>
+                            <td class="p-3.5 text-center font-medium text-slate-700 align-top">${group.totalPack} pack</td>
+                            <td class="p-3.5 text-right font-semibold text-slate-900 align-top">${formatRupiah(group.totalHarga)}</td>
                         `;
                         tableBody.appendChild(tr);
                     });
@@ -295,29 +313,40 @@
                     if (chartInstance) chartInstance.destroy();
 
                     const ctx = document.getElementById('salesChart').getContext('2d');
-                    let gradient = ctx.createLinearGradient(0, 0, 0, 400);
-                    gradient.addColorStop(0, 'rgba(255, 105, 180, 0.5)');
-                    gradient.addColorStop(1, 'rgba(230, 230, 250, 0.1)');
+                    let gradient = ctx.createLinearGradient(0, 0, 0, 300);
+                    gradient.addColorStop(0, 'rgba(79, 70, 229, 0.2)');
+                    gradient.addColorStop(1, 'rgba(79, 70, 229, 0.0)');
 
                     chartInstance = new Chart(ctx, {
                         type: 'line',
                         data: {
                             labels: labels,
                             datasets: [{
-                                label: 'Total Jualan (Rp)',
+                                label: 'Pendapatan (Rp)',
                                 data: totals,
-                                borderColor: '#FF69B4',
-                                borderWidth: 4,
+                                borderColor: '#4F46E5',
+                                borderWidth: 2.5,
                                 backgroundColor: gradient,
+                                pointBackgroundColor: '#4F46E5',
                                 fill: true,
-                                tension: 0.4
+                                tension: 0.3
                             }]
                         },
                         options: {
                             responsive: true,
                             maintainAspectRatio: false,
                             plugins: { legend: { display: false } },
-                            scales: { y: { beginAtZero: true } }
+                            scales: { 
+                                y: { 
+                                    beginAtZero: true,
+                                    grid: { color: '#F1F5F9' },
+                                    ticks: { font: { family: 'Inter', size: 11 } }
+                                },
+                                x: {
+                                    grid: { display: false },
+                                    ticks: { font: { family: 'Inter', size: 11 } }
+                                }
+                            }
                         }
                     });
                 }
@@ -374,21 +403,28 @@
                 container.innerHTML = `
                     <div class="item-row grid grid-cols-1 md:grid-cols-12 gap-2 items-center">
                         <div class="md:col-span-7">
-                            <select class="produkSelect w-full p-3 border-2 border-soft-pink rounded-full focus:outline-none focus:ring-2 focus:ring-hot-pink bg-white" required>
-                                <option value="" data-harga="0">-- Pilih Varian --</option>
-                                <option value="Matcha Cheese (Isi 5)" data-harga="20000">Matcha Cheese (20k)</option>
-                                <option value="Choco Cheese (Isi 5)" data-harga="20000">Choco Cheese (20k)</option>
-                                <option value="Ragout Ayam (Isi 5)" data-harga="20000">Ragout Ayam (20k)</option>
-                                <option value="Beef Bolognese (Isi 5)" data-harga="20000">Beef Bolognese (20k)</option>
-                                <option value="Mix Manis (6 Pcs)" data-harga="24000">Mix Manis 6 Pcs (24k)</option>
+                            <select class="produkSelect w-full p-2.5 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary bg-white" required>
+                                <option value="" data-harga="0">-- Pilih Varian Produk --</option>
+                                <option value="Matcha Cheese (Isi 5)" data-harga="20000">Matcha Cheese (Rp 20.000)</option>
+                                <option value="Choco Cheese (Isi 5)" data-harga="20000">Choco Cheese (Rp 20.000)</option>
+                                <option value="Ragout Ayam (Isi 5)" data-harga="20000">Ragout Ayam (Rp 20.000)</option>
+                                <option value="Beef Bolognese (Isi 5)" data-harga="20000">Beef Bolognese (Rp 20.000)</option>
+                                <option value="Mix Manis (6 Pcs)" data-harga="24000">Mix Manis 6 Pcs (Rp 24.000)</option>
                                 <option value="Mix Asin (6 Pcs)" data-harga="24000">Mix Asin 6 Pcs (24k)</option>
                             </select>
                         </div>
                         <div class="md:col-span-4">
-                            <input type="number" class="jumlahInput w-full p-3 border-2 border-soft-pink rounded-full focus:outline-none focus:ring-2 focus:ring-hot-pink bg-white" min="1" value="1" placeholder="Pack" required>
+                            <div class="relative">
+                                <input type="number" class="jumlahInput w-full p-2.5 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary bg-white pr-12" min="1" value="1" placeholder="Jumlah" required>
+                                <span class="absolute right-3 top-2.5 text-xs text-slate-400 font-medium pointer-events-none">Pack</span>
+                            </div>
                         </div>
                         <div class="md:col-span-1 text-center">
-                            <button type="button" class="removeItemBtn text-red-400 hover:text-red-600 font-bold p-2 text-xl hidden">✕</button>
+                            <button type="button" class="removeItemBtn text-slate-400 hover:text-red-500 font-bold p-1 transition hidden" title="Hapus Item">
+                                <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                </svg>
+                            </button>
                         </div>
                     </div>
                 `;
